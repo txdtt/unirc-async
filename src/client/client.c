@@ -19,17 +19,14 @@ int main() {
     int rv;
     char servaddress[32];
     char port[32];
-    char username[1024];
-    char client_name[1024];
-
-    char *input_buffer = malloc(MAXSTR + 1);
+    char input_buffer[MAXSTR];
+    char client_name[MAXSTR];
+    char username[MAXSTR];
 
     pthread_t receive_thread;
 
     printf("Enter your username: ");
     fgets(client_name, sizeof(client_name), stdin);
-
-    client_name[strcspn(client_name, "\n")] = '\0';
 
     printf("Enter server address: ");
     scanf("%s", servaddress);
@@ -72,6 +69,8 @@ int main() {
 
     freeaddrinfo(servinfo);
 
+    client_name[strcspn(client_name, "\n")] = 0;
+
     strcat(client_name, ": ");
    
     pthread_create(&receive_thread, NULL, receive_message, (void *) &sockfd);
@@ -83,8 +82,6 @@ int main() {
 
         fgets(input_buffer, sizeof(input_buffer), stdin);
 
-        //inp_buffer[strcspn(inp_buffer, "\n")] = 0;
-
         if (strncmp(input_buffer, "exit", 4) == 0) {
             printf("exiting...\n");
             close(sockfd);
@@ -92,6 +89,8 @@ int main() {
         }
  
         strcat(username, input_buffer);
+
+        username[strcspn(username, "\n")] = 'A';
  
         if (send(sockfd, username, strlen(username), 0) == -1) {
             perror("send");

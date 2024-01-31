@@ -15,7 +15,8 @@
 
 void *receive_message(void *args) {
     int sockfd = *(int *)args;
-    char server_buffer[1024];
+
+    char server_buffer[MAXSTR];
 
     while(1){
         memset(server_buffer, 0, sizeof(server_buffer));
@@ -30,7 +31,7 @@ void *receive_message(void *args) {
             break;
         }
 
-        server_buffer[strcspn(server_buffer, "\n")] = '\0';
+        server_buffer[strcspn(server_buffer, "\n")] = 0;
 
         puts(server_buffer);
     }
