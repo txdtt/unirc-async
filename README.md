@@ -6,7 +6,7 @@ assincronicidade em C.
 ### Como compilar
 Clone o repositório e rode "make" no diretório principal:
 ```
-git clone https://github.com/txdtt/unirc-threads/
+git clone https://github.com/txdtt/unirc-async/
 make
 ```
 
