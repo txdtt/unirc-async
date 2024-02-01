@@ -86,7 +86,7 @@ int main() {
                 } else { // If not the listener, we're just a regular client
 
                     int nbytes = recv(pfds[i].fd, input_buffer, 
-                            sizeof(input_buffer), 0);
+                            sizeof(input_buffer) + 1, 0);
 
                     int sender_fd = pfds[i].fd;
 
@@ -103,6 +103,7 @@ int main() {
                         close(pfds[i].fd); 
 
                         del_from_pfds(pfds, i, &fd_count);
+
                     } else {
 
                         for (int j = 0; j < fd_count; j++) {

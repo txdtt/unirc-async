@@ -70,12 +70,14 @@ int main() {
     freeaddrinfo(servinfo);
 
     client_name[strcspn(client_name, "\n")] = 0;
+    client_name[strcspn(client_name, "\r")] = 0;
 
     strcat(client_name, ": ");
    
     pthread_create(&receive_thread, NULL, receive_message, (void *) &sockfd);
 
     while(1) {
+        memset(input_buffer, 0, sizeof(input_buffer));
         memset(username, 0, sizeof(username));
 
         strcpy(username, client_name);
@@ -87,10 +89,14 @@ int main() {
             close(sockfd);
             return 1;
         }
+
+        input_buffer[strcspn(input_buffer, "\n")] = 0;
+        input_buffer[strcspn(input_buffer, "\r")] = 0;
  
         strcat(username, input_buffer);
 
-        username[strcspn(username, "\n")] = 'A';
+        username[strcspn(username, "\n")] = 0;
+        username[strcspn(username, "\r")] = 0;
  
         if (send(sockfd, username, strlen(username), 0) == -1) {
             perror("send");
